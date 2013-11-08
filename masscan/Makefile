@@ -29,8 +29,8 @@ INCLUDES=       -I.
 FLAGS2=
 
 pre-build:
-	${REINPLACE_CMD} -e "s|gcc -dumpmachine|uname -s \| tr \"[:upper:]\" \"[:lower:]\" |" ${WRKSRC}/Makefile
-	${REINPLACE_CMD} -e "s|CC = gcc|CC ?= gcc|" ${WRKSRC}/Makefile
+	${REINPLACE_CMD} -e 's|gcc -dumpmachine|uname -s \| tr "[:upper:]" "[:lower:]"|' ${WRKSRC}/Makefile
+	${REINPLACE_CMD} -e 's|CC = gcc|CC ?= gcc|' ${WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/masscan ${STAGEDIR}${PREFIX}/bin/masscan
