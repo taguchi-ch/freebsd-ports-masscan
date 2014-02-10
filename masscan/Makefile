@@ -1,8 +1,8 @@
 # Created by: Chie Taguchi <taguchi.ch@gmail.com>
-# $FreeBSD: head/security/masscan/Makefile 338513 2014-01-03 01:12:59Z bapt $
+# $FreeBSD$
 
 PORTNAME=	masscan
-PORTVERSION=	1.0
+PORTVERSION=	1.0.3
 CATEGORIES=	security
 MASTER_SITES=	http://github.com/robertdavidgraham/${PORTNAME}/archive/${PORTVERSION}.tar.gz?dummy=/
 
@@ -12,10 +12,14 @@ COMMENT=	Very fast port scanner
 LICENSE=	GPLv3
 
 USES=		gmake
-CFLAGS+=	-I. -Wno-format
-MAKE_ARGS=	SYS=freebsd CC=${CC} CFLAGS="${CFLAGS}" LIBS="-lpcap -lm ${PTHREAD_LIBS}"
+CFLAGS+=	-Wno-format
+MAKE_ARGS=	SYS=freebsd CC=${CC} CFLAGS="${CFLAGS}"
 
 PLIST_FILES=	bin/masscan man/man8/masscan.8.gz
+
+pre-build:
+	@${REINPLACE_CMD} -e 's|SYS :=|SYS ?=|'\
+	-e 's|git describe --tags|git rev-parse HEAD|' ${WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/masscan ${STAGEDIR}${PREFIX}/bin
