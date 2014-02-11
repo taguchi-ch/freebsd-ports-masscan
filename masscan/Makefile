@@ -15,11 +15,13 @@ USES=		gmake
 CFLAGS+=	-Wno-format
 MAKE_ARGS=	SYS=freebsd CC=${CC} CFLAGS="${CFLAGS}"
 
+NEED_ROOT=	yes
+
 PLIST_FILES=	bin/masscan man/man8/masscan.8.gz
 
 pre-build:
-	@${REINPLACE_CMD} -e 's|SYS :=|SYS ?=|'\
-	-e 's|git describe --tags|git rev-parse HEAD|' ${WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e "s|SYS :=|SYS ?=|"\
+	-e "s|describe --tags|describe --tags 2> /dev/null|" ${WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/masscan ${STAGEDIR}${PREFIX}/bin
