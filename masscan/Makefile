@@ -2,13 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=       masscan
-PORTVERSION=    1.0.3
+PORTVERSION=    1.0.4
 CATEGORIES=     security
 
 MAINTAINER=     taguchi.ch@gmail.com
 COMMENT=        Very fast port scanner
 
 LICENSE=        GPLv3
+LICENSE_FILE=   ${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS= amd64 i386 ia64
 ONLY_FOR_ARCHS_REASON=  uses i386 assembler
@@ -20,10 +21,6 @@ CFLAGS+=        -Wno-format
 MAKE_ARGS=      SYS=freebsd CC="${CC}" CFLAGS="${CFLAGS}"
 
 PLIST_FILES=    bin/masscan man/man8/masscan.8.gz
-
-pre-build:
-        @${REINPLACE_CMD} -e "s|SYS :=|SYS ?=|"\
-        -e "s|describe --tags|describe --tags 2> /dev/null|" ${WRKSRC}/Makefile
 
 do-install:
         ${INSTALL_PROGRAM} ${WRKSRC}/bin/masscan ${STAGEDIR}${PREFIX}/bin
